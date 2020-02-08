@@ -15,13 +15,12 @@
   z-index: 1;
   &::before,
   &::after {
-    $height: 30px;
-    top: calc(50% - $height);
+    top: calc(50% - 30px);
     content: "";
     position: absolute;
     z-index: -1;
     background: #3d2d16;
-    height: $height;
+    height: 30px;
     width: 100%;
   }
 }
