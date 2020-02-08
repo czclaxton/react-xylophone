@@ -1,24 +1,54 @@
-import React from 'react';
-import notes from './assets/notes.js';
-import './App.scss';
+import React, { useState } from "react";
+import notes from "./assets/notes.js";
+import "./App.scss";
+import NoteButton from "./NoteButton";
 
 function App() {
+  const [playedNotes, setPlayedNotes] = useState([]);
+
+  const replayNotes = () => {
+    playedNotes.map((note, i) => {
+      window.setTimeout(() => new Audio(note.file).play(), 500 * i);
+    });
+  };
+
+  const addPlayedNote = note => {
+    setPlayedNotes([...playedNotes, note]);
+  };
+
   return (
     <div className="page">
-      <h1>Create your react xylophone</h1>
+      <h1>Xylophone made in React!</h1>
       <div className="xylophone">
-        {/* I am placeholder buttons, please create me using a map, and with your own component */}
-        <button>c</button>
-        <button>d1</button>
-        <button>e1</button>
-        <button>f</button>
-        <button>g</button>
-        <button>a</button>
-        <button>b</button>
-        <button>c2</button>
+        {notes.map((note, i) => {
+          return (
+            <NoteButton
+              i={i}
+              key={note.name}
+              note={note}
+              addPlayedNote={addPlayedNote}
+              style={{ height: 200 - 15 * i + "px" }}
+            />
+          );
+        })}
       </div>
-      {/* <button>Replay</button> */}
-      {/* <button>Clear</button> */}
+      <div className="played-notes">
+        {playedNotes.map((note, i) => {
+          return (
+            <span key={note.name + i} className={note.name}>
+              {note.name}
+            </span>
+          );
+        })}
+      </div>
+      <div className="controls">
+        <button className="play" onClick={() => replayNotes()}>
+          Replay
+        </button>
+        <button className="reset" onClick={() => setPlayedNotes([])}>
+          Clear
+        </button>
+      </div>
     </div>
   );
 }
